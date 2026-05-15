@@ -380,6 +380,10 @@
         body.light-mode .dark\:text-light.dark {
             color: #F8FAFC;
         }
+        /* Specific light mode skill tag styling */
+        body.light-mode .skill-tag.text-slate-900 {
+            color: #0F172A !important;
+        }
     </style>
 </head>
 <body class="bg-dark text-light theme-transition">
@@ -653,14 +657,14 @@
                         </div>
                         <div class="skill-category-content">
                             <div class="tag-container">
-                                <span class="skill-tag text-slate-900 dark:text-white">C++</span>
-                                <span class="skill-tag text-slate-900 dark:text-white">Object-Oriented Programming</span>
-                                <span class="skill-tag text-slate-900 dark:text-white">Data Structures</span>
-                                <span class="skill-tag text-slate-900 dark:text-white">Algorithms</span>
-                                <span class="skill-tag text-slate-900 dark:text-white">Database Management</span>
-                                <span class="skill-tag text-slate-900 dark:text-white">Web Development</span>
-                                <span class="skill-tag text-slate-900 dark:text-white">Mobile App Development</span>
-                                <span class="skill-tag text-slate-900 dark:text-white">UI/UX Design</span>
+                                <span class="skill-tag bg-slate-800 text-white">C++</span>
+                                <span class="skill-tag bg-slate-800 text-white">Object-Oriented Programming</span>
+                                <span class="skill-tag bg-slate-800 text-white">Data Structures</span>
+                                <span class="skill-tag bg-slate-800 text-white">Algorithms</span>
+                                <span class="skill-tag bg-slate-800 text-white">Database Management</span>
+                                <span class="skill-tag bg-slate-800 text-white">Web Development</span>
+                                <span class="skill-tag bg-slate-800 text-white">Mobile App Development</span>
+                                <span class="skill-tag bg-slate-800 text-white">UI/UX Design</span>
                             </div>
                         </div>
                     </div>
@@ -673,12 +677,12 @@
                         </div>
                         <div class="skill-category-content">
                             <div class="tag-container">
-                                <span class="skill-tag text-slate-900 dark:text-white">Cisco Packet Tracer</span>
-                                <span class="skill-tag text-slate-900 dark:text-white">Networking</span>
-                                <span class="skill-tag text-slate-900 dark:text-white">Git</span>
-                                <span class="skill-tag text-slate-900 dark:text-white">SQL</span>
-                                <span class="skill-tag text-slate-900 dark:text-white">MySQL</span>
-                                <span class="skill-tag text-slate-900 dark:text-white">PostgreSQL</span>
+                                <span class="skill-tag bg-slate-800 text-white">Cisco Packet Tracer</span>
+                                <span class="skill-tag bg-slate-800 text-white">Networking</span>
+                                <span class="skill-tag bg-slate-800 text-white">Git</span>
+                                <span class="skill-tag bg-slate-800 text-white">SQL</span>
+                                <span class="skill-tag bg-slate-800 text-white">MySQL</span>
+                                <span class="skill-tag bg-slate-800 text-white">PostgreSQL</span>
                             </div>
                         </div>
                     </div>
