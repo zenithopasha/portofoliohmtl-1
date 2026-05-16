@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Zenitho</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B5CF6',
+                        secondary: '#7C3AED',
+                        dark: '#0F172A',
+                        light: '#F8FAFC'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #350663E 0%, #7C3AED 100%);
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .project-detail {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #0F172A;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            padding: 2rem;
+            position: relative;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .modal-content.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #94a3b8;
+        }
+        .close-btn:hover {
+            color: white;
+        }
+        .skill-category {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        .skill-category-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .skill-category-title i {
+            margin-right: 0.75rem;
+            color: #8B5CF6;
+            font-size: 1.25rem;
+        }
+        .skill-category-title h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        .skill-category-content {
+            padding-left: 2.5rem;
+        }
+        .skill-tag {
+            display: inline-block;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid #334155;
+        }
+        .skill-tag:hover {
+            background: #8B5CF6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .professional-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #f59e0b;
+            color: white;
+            font-weight: bold;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid #334155;
+            margin: 0.25rem;
+        }
+        .chip:hover {
+            background: #8B5CF6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .chip-icon {
+            margin-right: 0.5rem;
+        }
+        .theme-transition {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        /* Light mode specific styles */
+        body.light-mode {
+            background-color: #F8FAFC;
+            color: #0F172A;
+        }
+        body.light-mode .bg-dark {
+            background-color: #F8FAFC;
+            color: #0F172A;
+        }
+        body.light-mode .text-light {
+            color: #0F172A;
+        }
+        body.light-mode .bg-gray-800 {
+            background-color: #e2e8f0;
+            color: #0F172A;
+        }
+        body.light-mode .text-gray-300 {
+            color: #334155;
+        }
+        body.light-mode .text-gray-400 {
+            color: #475569;
+        }
+        body.light-mode .text-gray-500 {
+            color: #64748b;
+        }
+        body.light-mode .bg-gray-700 {
+            background-color: #cbd5e1;
+        }
+        body.light-mode .border-gray-600 {
+            border-color: #94a3b8;
+        }
+        body.light-mode .bg-gray-900 {
+            background-color: #f1f5f9;
+        }
+        body.light-mode .bg-primary {
+            background-color: #8B5CF6;
+        }
+        body.light-mode .text-primary {
+            color: #8B5CF6;
+        }
+        body.light-mode .hover\:bg-primary:hover {
+            background-color: #7C3AED;
+        }
+        body.light-mode .text-secondary {
+            color: #7C3AED;
+        }
+        body.light-mode .hover\:bg-secondary:hover {
+            background-color: #6d28d9;
+        }
+        body.light-mode .bg-white {
+            background-color: #ffffff;
+        }
+        body.light-mode .text-white {
+            color: #ffffff;
+        }
+        body.light-mode .border-t {
+            border-top-color: #e2e8f0;
+        }
+        body.light-mode .border-gray-700 {
+            border-color: #cbd5e1;
+        }
+        body.light-mode .hero-bg {
+            background: linear-gradient(135deg, #350663E 0%, #7C3AED 100%);
+        }
+        body.light-mode nav {
+            background-color: #ffffff;
+            color: #0F172A;
+        }
+        body.light-mode .skill-category-content {
+            padding-left: 2.5rem;
+        }
+        body.light-mode .skill-tag {
+            background: #e2e8f0;
+            color: #0F172A;
+            border: 1px solid #94a3b8;
+        }
+        body.light-mode .skill-tag:hover {
+            background: #8B5CF6;
+            color: #ffffff;
+        }
+        body.light-mode .chip {
+            background: #e2e8f0;
+            color: #0F172A;
+            border: 1px solid #94a3b8;
+        }
+        body.light-mode .chip:hover {
+            background: #8B5CF6;
+            color: #ffffff;
+        }
+        body.light-mode .modal-content {
+            background-color: #ffffff;
+        }
+        body.light-mode .close-btn {
+            color: #64748b;
+        }
+        body.light-mode .close-btn:hover {
+            color: #0F172A;
+        }
+        body.light-mode .project-card {
+            background-color: #ffffff;
+        }
+        body.light-mode .project-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        body.light-mode footer {
+            background-color: #f1f5f9;
+        }
+        body.light-mode .text-light {
+            color: #0F172A;
+        }
+        body.light-mode .text-gray-300 {
+            color: #334155;
+        }
+        body.light-mode .text-gray-400 {
+            color: #475569;
+        }
+        body.light-mode .text-gray-500 {
+            color: #64748b;
+        }
+        body.light-mode .bg-gray-800 {
+            background-color: #e2e8f0;
+        }
+        body.light-mode .bg-gray-700 {
+            background-color: #cbd5e1;
+        }
+        body.light-mode .border-gray-600 {
+            border-color: #94a3b8;
+        }
+        body.light-mode .border-gray-700 {
+            border-color: #cbd5e1;
+        }
+        body.light-mode .border-l-4 {
+            border-left-color: #8B5CF6;
+        }
+        body.light-mode .text-purple-300 {
+            color: #a78bfa;
+        }
+        body.light-mode .text-purple-200 {
+            color: #c4b5fd;
+        }
+        body.light-mode .text-purple-100 {
+            color: #e7d9ff;
+        }
+        body.light-mode .text-yellow-300 {
+            color: #fbbf24;
+        }
+        body.light-mode .bg-purple-900 {
+            background-color: #4c1d95;
+        }
+        body.light-mode .bg-green-900 {
+            background-color: #166534;
+        }
+        body.light-mode .bg-blue-900 {
+            background-color: #1e3a8a;
+        }
+        body.light-mode .bg-purple-200 {
+            background-color: #ddd6fe;
+        }
+        body.light-mode .bg-green-200 {
+            background-color: #86efac;
+        }
+        body.light-mode .bg-blue-200 {
+            background-color: #bfdbfe;
+        }
+        body.light-mode .bg-purple-500 {
+            background-color: #8B5CF6;
+        }
+        body.light-mode .bg-green-500 {
+            background-color: #22c55e;
+        }
+        body.light-mode .bg-blue-500 {
+            background-color: #3b82f6;
+        }
+        body.light-mode .bg-gray-100 {
+            background-color: #f1f5f9;
+        }
+        body.light-mode .bg-gray-200 {
+            background-color: #e2e8f0;
+        }
+        body.light-mode .bg-gray-300 {
+            background-color: #cbd5e1;
+        }
+        body.light-mode .bg-gray-400 {
+            background-color: #94a3b8;
+        }
+        body.light-mode .bg-gray-500 {
+            background-color: #64748b;
+        }
+        body.light-mode .bg-gray-600 {
+            background-color: #475569;
+        }
+        body.light-mode .bg-gray-700 {
+            background-color: #334155;
+        }
+        body.light-mode .bg-gray-800 {
+            background-color: #1e293b;
+        }
+        body.light-mode .bg-gray-900 {
+            background-color: #0f172a;
+        }
+        body.light-mode h2, body.light-mode h3, body.light-mode h4, body.light-mode h5 {
+            color: #0F172A;
+        }
+        body.light-mode .bg-dark {
+            background-color: #F8FAFC;
+        }
+        body.light-mode .dark\:bg-dark.dark {
+            background-color: #0F172A;
+        }
+        body.light-mode .dark\:text-light.dark {
+            color: #F8FAFC;
+        }
+        /* Specific light mode skill tag styling */
+        body.light-mode .skill-tag.text-slate-900 {
+            color: #0F172A !important;
+        }
+    </style>
+</head>
+<body class="bg-dark text-light theme-transition">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-dark shadow-md z-50 theme-transition">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <img src="https://iili.io/BpJePRf.png" alt="Logo" class="h-10 mr-3">
+                    <span class="text-2xl font-bold">
+                        <span class="text-white dark:text-white">Portfolio</span>
+                        <span class="text-yellow-400 dark:text-yellow-400">Zenitho</span>
+                    </span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <button onclick="scrollToSection('home')" class="font-medium hover:text-primary transition-colors text-white dark:text-white">Home</button>
+                    <button onclick="scrollToSection('about')" class="font-medium hover:text-primary transition-colors text-white dark:text-white">About</button>
+                    <button onclick="scrollToSection('experience')" class="font-medium hover:text-primary transition-colors text-white dark:text-white">Experience</button>
+                    <button onclick="scrollToSection('skills')" class="font-medium hover:text-primary transition-colors text-white dark:text-white">Skills</button>
+                    <button onclick="scrollToSection('projects')" class="font-medium hover:text-primary transition-colors text-white dark:text-white">Projects</button>
+                    <button onclick="scrollToSection('contact')" class="font-medium hover:text-primary transition-colors text-white dark:text-white">Contact</button>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 transition-colors text-white dark:text-white" aria-label="Toggle theme">
+                        <i class="fas fa-moon text-xl"></i>
+                    </button>
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-button" class="text-white dark:text-white hover:text-primary">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-dark border-t border-gray-700 theme-transition">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button onclick="scrollToSection('home')" class="block px-3 py-2 rounded-md text-base font-medium text-white dark:text-white hover:text-primary hover:bg-gray-800 w-full text-left">Home</button>
+                <button onclick="scrollToSection('about')" class="block px-3 py-2 rounded-md text-base font-medium text-white dark:text-white hover:text-primary hover:bg-gray-800 w-full text-left">About</button>
+                <button onclick="scrollToSection('experience')" class="block px-3 py-2 rounded-md text-base font-medium text-white dark:text-white hover:text-primary hover:bg-gray-800 w-full text-left">Experience</button>
+                <button onclick="scrollToSection('skills')" class="block px-3 py-2 rounded-md text-base font-medium text-white dark:text-white hover:text-primary hover:bg-gray-800 w-full text-left">Skills</button>
+                <button onclick="scrollToSection('projects')" class="block px-3 py-2 rounded-md text-base font-medium text-white dark:text-white hover:text-primary hover:bg-gray-800 w-full text-left">Projects</button>
+                <button onclick="scrollToSection('contact')" class="block px-3 py-2 rounded-md text-base font-medium text-white dark:text-white hover:text-primary hover:bg-gray-800 w-full text-left">Contact</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg min-h-screen flex items-center pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="animate-on-scroll">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white dark:text-white leading-tight">
+                        Hi, I'm <span class="text-yellow-300">Muhammad Zenitho Mawla Pasha Munif</span>
+                    </h1>
+                    <h2 class="text-2xl md:text-3xl text-purple-100 dark:text-purple-100 mt-4">Informatics Engineering Student & Technology Leader</h2>
+                    <p class="text-lg text-purple-200 dark:text-purple-200 mt-6 max-w-lg">
+                        Informatics Engineering student at UPN "Veteran" Yogyakarta with a strong focus on software development and technological infrastructure. 
+                        Possesses technical experience in IoT development, game programming logic, and large-scale network design.
+                    </p>
+                    <div class="mt-8 flex space-x-4">
+                        <button onclick="scrollToSection('experience')" class="bg-white text-primary hover:bg-gray-100 font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-sm">
+                            View Experience
+                        </button>
+                        <a href="https://drive.google.com/file/d/1BLNxhmBX9d-k_l6pe6eEiQiU4-Gu7jae/view?usp=sharing" target="_blank" class="bg-primary hover:bg-secondary text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-sm">
+                            Download CV
+                        </a>
+                    </div>
+                </div>
+                <div class="flex justify-center animate-on-scroll relative">
+                    <div class="relative">
+                        <div class="w-64 h-64 md:w-80 md:h-80 bg-white rounded-full overflow-hidden border-4 border-white shadow-xl">
+                            <img src="https://avatars.githubusercontent.com/u/216426514?v=4" alt="Muhammad Zenitho" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -bottom-4 -right-4 bg-primary text-white py-2 px-6 rounded-full font-bold shadow-lg flex items-center">
+                            <i class="fas fa-code mr-2"></i>1 Year Experience
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-slate-50 dark:bg-slate-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">About Me</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mt-4"></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="animate-on-scroll">
+                    <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-4">Who I Am</h3>
+                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
+                        I'm a dedicated informatics student at UPN "Veteran" Yogyakarta specializing in software development and technological infrastructure. 
+                        With extensive experience in leading cross-sectoral coordination and managing engagement for a 5,000+ member community, 
+                        I combine technical precision with creative storytelling to amplify event visibility and drive high-impact audience engagement.
+                    </p>
+                    <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
+                        My journey has been marked by diverse roles including community communications coordinator, event coordination, 
+                        and leadership positions in various organizations. I bring a unique blend of technical expertise and creative 
+                        communication strategies to every project I undertake.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 mt-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-primary mr-3"></i>
+                            <span class="font-medium text-slate-900 dark:text-white">Software Development</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-primary mr-3"></i>
+                            <span class="font-medium text-slate-900 dark:text-white">Network Design</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-primary mr-3"></i>
+                            <span class="font-medium text-slate-900 dark:text-white">Community Engagement</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-primary mr-3"></i>
+                            <span class="font-medium text-slate-900 dark:text-white">IoT Development</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="animate-on-scroll">
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm">
+                        <h4 class="text-xl font-semibold text-slate-900 dark:text-white mb-6">My Education</h4>
+                        <div class="space-y-6">
+                            <div class="border-l-4 border-primary pl-4 py-1">
+                                <h5 class="font-bold text-lg text-slate-900 dark:text-white">Bachelor of Informatics Engineering</h5>
+                                <p class="text-slate-500 dark:text-slate-400">UPN "Veteran" Yogyakarta • Aug. 2025 - Present</p>
+                                <p class="text-slate-500 dark:text-slate-400 mt-2">Coursework in programming, web development, UI/UX fundamentals, and software engineering.</p>
+                            </div>
+                            <div class="border-l-4 border-primary pl-4 py-1">
+                                <h5 class="font-bold text-lg text-slate-900 dark:text-white">Senior High School</h5>
+                                <p class="text-slate-500 dark:text-slate-400">SMA N 1 Kota Pekalongan • July 2022 - May 2025</p>
+                                <p class="text-slate-500 dark:text-slate-400 mt-2">Relevant coursework and extracurricular involvement in design and publication.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-20 bg-slate-50 dark:bg-slate-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">Experience & Achievements</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mt-4"></div>
+            </div>
+            <div class="space-y-12">
+                <!-- Campus Network System Development -->
+                <div class="animate-on-scroll bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Campus Network System Development</h3>
+                        <span class="text-primary font-bold mt-2 md:mt-0">Jul 2024 - Present</span>
+                    </div>
+                    <h4 class="text-xl text-purple-300 dark:text-purple-300 mb-4">Infrastructure Simulation</h4>
+                    <ul class="space-y-3 text-slate-600 dark:text-slate-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Designed a campus-scale computer network architecture featuring inter-building integration using Cisco Packet Tracer</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Configured DHCP Servers and VLANs for efficient traffic management and automated IP Address distribution</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Optimized network performance through precise subnetting calculations (NA, BA, HA, SM) to ensure infrastructure scalability</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Blackjack Game Development -->
+                <div class="animate-on-scroll bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Blackjack Game Development</h3>
+                        <span class="text-primary font-bold mt-2 md:mt-0">Oct 2023 - Dec 2023</span>
+                    </div>
+                    <h4 class="text-xl text-purple-300 dark:text-purple-300 mb-4">Programming Project</h4>
+                    <ul class="space-y-3 text-slate-600 dark:text-slate-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Developed a console-based Blackjack card game application using C++</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Implemented complex algorithmic logic for random card shuffling, hand value calculation, and a basic AI for the dealer</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Applied advanced data structures and control flows to ensure game rule validity and a responsive user experience</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Lead Coordinator – Agitera.id -->
+                <div class="animate-on-scroll bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Lead Coordinator – Agitera.id</h3>
+                        <span class="text-primary font-bold mt-2 md:mt-0">Oct 2024 - Jan 2025</span>
+                    </div>
+                    <ul class="space-y-3 text-slate-600 dark:text-slate-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>IoT Development: Built a temperature-sensing smart lamp for community health monitoring</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Technical Leadership: Led the technical team during technology product exhibitions to present device functionality to the public</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Community Communications Coordinator -->
+                <div class="animate-on-scroll bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Community Communications Coordinator</h3>
+                        <span class="text-primary font-bold mt-2 md:mt-0">July 2025 - Present</span>
+                    </div>
+                    <h4 class="text-xl text-purple-300 dark:text-purple-300 mb-4">Paddock Community</h4>
+                    <ul class="space-y-3 text-slate-600 dark:text-slate-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Managed and moderated a community with 5,000+ active members</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Coordinated community engagement, events, and discussions</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Facilitated community broadcast sessions to support engagement and member retention</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Analyzed member activity and feedback to improve community experience</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Other Experience -->
+                <div class="animate-on-scroll bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Various Leadership Roles</h3>
+                        <span class="text-primary font-bold mt-2 md:mt-0">Jan 2023 - Present</span>
+                    </div>
+                    <ul class="space-y-3 text-slate-600 dark:text-slate-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Lead Coordinator, Agitera.id</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Vice Head of Public Design, Pakarnians 2023</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Lead Coordinator, Kimochi and Friend</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                            <span>Lead Coordinator, Regenzi Water Conservation</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Awards & Certifications -->
+            <div class="mt-16 animate-on-scroll">
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Awards & Certifications</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-primary text-2xl mb-4">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2 text-slate-900 dark:text-white">Certificate of Leadership</h4>
+                        <p class="text-slate-600 dark:text-slate-300">Vice Chair, MPK SMA N 1 Kota Pekalongan (2024)</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-primary text-2xl mb-4">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2 text-slate-900 dark:text-white">Certificate of Leadership</h4>
+                        <p class="text-slate-600 dark:text-slate-300">Organizers Forum Committee, KIS (2024)</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-primary text-2xl mb-4">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2 text-slate-900 dark:text-white">Rookie of the Year</h4>
+                        <p class="text-slate-600 dark:text-slate-300">SMANSA Crew (2023)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-slate-50 dark:bg-slate-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">My Skills</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mt-4"></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="animate-on-scroll">
+                    <div class="skill-category">
+                        <div class="skill-category-title">
+                            <i class="fas fa-code text-primary"></i>
+                            <h3 class="text-slate-900 dark:text-white">Programming Languages</h3>
+                        </div>
+                        <div class="skill-category-content">
+                            <div class="tag-container">
+                                <span class="skill-tag bg-slate-800 text-white">C++ (Advanced Logic)</span>
+                                <span class="skill-tag bg-slate-800 text-white">Python</span>
+                                <span class="skill-tag bg-slate-800 text-white">Java</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category mt-8">
+                        <div class="skill-category-title">
+                            <i class="fas fa-gamepad text-primary"></i>
+                            <h3 class="text-slate-900 dark:text-white">Software Engineering</h3>
+                        </div>
+                        <div class="skill-category-content">
+                            <div class="tag-container">
+                                <span class="skill-tag bg-slate-800 text-white">Game Logic Development</span>
+                                <span class="skill-tag bg-slate-800 text-white">Web Development</span>
+                                <span class="skill-tag bg-slate-800 text-white">UI/UX Fundamentals</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="animate-on-scroll">
+                    <div class="skill-category">
+                        <div class="skill-category-title">
+                            <i class="fas fa-network-wired text-primary"></i>
+                            <h3 class="text-slate-900 dark:text-white">Networking & IoT</h3>
+                        </div>
+                        <div class="skill-category-content">
+                            <div class="tag-container">
+                                <span class="skill-tag bg-slate-800 text-white">Campus Network Design</span>
+                                <span class="skill-tag bg-slate-800 text-white">DHCP & Server Configuration</span>
+                                <span class="skill-tag bg-slate-800 text-white">Cisco Packet Tracer</span>
+                                <span class="skill-tag bg-slate-800 text-white">IoT Devices</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category mt-8">
+                        <div class="skill-category-title">
+                            <i class="fas fa-paint-brush text-primary"></i>
+                            <h3 class="text-slate-900 dark:text-white">Software & Design</h3>
+                        </div>
+                        <div class="skill-category-content">
+                            <div class="tag-container">
+                                <span class="skill-tag bg-slate-800 text-white">Adobe Premiere Pro</span>
+                                <span class="skill-tag bg-slate-800 text-white">After Effects</span>
+                                <span class="skill-tag bg-slate-800 text-white">Illustrator</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-slate-50 dark:bg-slate-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">Featured Projects</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mt-4"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card bg-white dark:bg-slate-800 rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md">
+                    <div class="h-48 bg-gradient-to-r from-purple-500 to-indigo-700 flex items-center justify-center relative">
+                        <i class="fas fa-lightbulb text-white text-5xl opacity-70"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Campus Network System Development</h3>
+                        <p class="text-slate-600 dark:text-slate-300 mb-4">Designed a campus-scale computer network architecture featuring inter-building integration using Cisco Packet Tracer.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-purple-900 text-purple-200 text-xs font-medium px-2.5 py-0.5 rounded">Networking</span>
+                            <span class="bg-green-900 text-green-200 text-xs font-medium px-2.5 py-0.5 rounded">Cisco</span>
+                            <span class="bg-blue-900 text-blue-200 text-xs font-medium px-2.5 py-0.5 rounded">Simulation</span>
+                        </div>
+                        <button onclick="showProjectDetail('project1')" class="text-primary font-medium hover:text-secondary flex items-center text-slate-900 dark:text-white">
+                            View Details <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card bg-white dark:bg-slate-800 rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md">
+                    <div class="h-48 bg-gradient-to-r from-green-500 to-teal-700 flex items-center justify-center">
+                        <div class="text-white text-5xl">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Blackjack Game Development</h3>
+                        <p class="text-slate-600 dark:text-slate-300 mb-4">Developed a console-based Blackjack card game application using C++.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-purple-900 text-purple-200 text-xs font-medium px-2.5 py-0.5 rounded">Programming</span>
+                            <span class="bg-green-900 text-green-200 text-xs font-medium px-2.5 py-0.5 rounded">C++</span>
+                            <span class="bg-blue-900 text-blue-200 text-xs font-medium px-2.5 py-0.5 rounded">Game Logic</span>
+                        </div>
+                        <button onclick="showProjectDetail('project2')" class="text-primary font-medium hover:text-secondary flex items-center text-slate-900 dark:text-white">
+                            View Details <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="project-card bg-white dark:bg-slate-800 rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md">
+                    <div class="h-48 bg-gradient-to-r from-pink-500 to-purple-700 flex items-center justify-center">
+                        <img src="https://i.ibb.co.com/DDb5rP4w/DSC00379.jpg" alt="Culinary Exhibition" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">IoT Smart Lamp Project</h3>
+                        <p class="text-slate-600 dark:text-slate-300 mb-4">Temperature-sensing smart lamp for community health monitoring.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-purple-900 text-purple-200 text-xs font-medium px-2.5 py-0.5 rounded">IoT</span>
+                            <span class="bg-green-900 text-green-200 text-xs font-medium px-2.5 py-0.5 rounded">Python</span>
+                            <span class="bg-blue-900 text-blue-200 text-xs font-medium px-2.5 py-0.5 rounded">Hardware</span>
+                        </div>
+                        <button onclick="showProjectDetail('project3')" class="text-primary font-medium hover:text-secondary flex items-center text-slate-900 dark:text-white">
+                            View Details <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-slate-50 dark:bg-slate-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">Get In Touch</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mt-4"></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="animate-on-scroll">
+                    <h3 class="text-2xl font-semibold text-slate-900 dark:text-white mb-6">Let's Connect</h3>
+                    <p class="text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
+                        I'm always open to discussing new opportunities, creative projects, or potential collaborations. 
+                        Feel free to reach out through any of these channels!
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-white dark:bg-slate-800 p-3 rounded-lg mr-4">
+                                <i class="fas fa-envelope text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-900 dark:text-white">Email</h4>
+                                <p class="text-slate-600 dark:text-slate-300">mzenitho.mp@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-white dark:bg-slate-800 p-3 rounded-lg mr-4">
+                                <i class="fab fa-whatsapp text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-900 dark:text-white">WhatsApp</h4>
+                                <p class="text-slate-600 dark:text-slate-300">+62 882-0033-64785</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-white dark:bg-slate-800 p-3 rounded-lg mr-4">
+                                <i class="fab fa-linkedin text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-900 dark:text-white">LinkedIn</h4>
+                                <p class="text-slate-600 dark:text-slate-300">linkedin.com/in/zenithopasha</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-white dark:bg-slate-800 p-3 rounded-lg mr-4">
+                                <i class="fas fa-map-marker-alt text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-900 dark:text-white">Location</h4>
+                                <p class="text-slate-600 dark:text-slate-300">Indonesia</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="animate-on-scroll">
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm">
+                        <form id="contactForm" class="space-y-6">
+                            <div>
+                                <label for="name" class="block text-slate-600 dark:text-slate-300 mb-2">Name</label>
+                                <input type="text" id="name" class="w-full bg-gray-100 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-slate-900 dark:text-white" placeholder="Your Name">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-slate-600 dark:text-slate-300 mb-2">Email</label>
+                                <input type="email" id="email" class="w-full bg-gray-100 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-slate-900 dark:text-white" placeholder="Your Email">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-slate-600 dark:text-slate-300 mb-2">Message</label>
+                                <textarea id="message" rows="5" class="w-full bg-gray-100 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-slate-900 dark:text-white" placeholder="Your Message"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-primary hover:bg-secondary text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-sm">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold text-white mb-4">Muhammad Zenitho Mawla Pasha Munif</h3>
+                <p class="text-slate-400 mb-6">Informatics Engineering Student & Technology Leader</p>
+                <div class="flex justify-center space-x-6 mb-8">
+                    <a href="https://www.linkedin.com/in/zenithopasha" target="_blank" class="text-slate-400 hover:text-primary transition-colors cursor-pointer">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/zenithopasha/" target="_blank" class="text-slate-400 hover:text-primary transition-colors cursor-pointer">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="https://github.com/zenithopasha" target="_blank" class="text-slate-400 hover:text-primary transition-colors cursor-pointer">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                </div>
+                <div class="border-t border-slate-800 pt-8">
+                    <p class="text-slate-500 text-sm">&copy; 2025 Muhammad Zenitho. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Project Detail Modal -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div id="projectDetailContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Check for saved theme preference or respect OS preference
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDarkScheme.matches)) {
+            htmlElement.classList.add('dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun text-xl text-white"></i>';
+        } else {
+            htmlElement.classList.remove('dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon text-xl text-white"></i>';
+        }
+
+        // Toggle theme
+        themeToggle.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            
+            // Update icon based on theme
+            if (htmlElement.classList.contains('dark')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun text-xl text-white"></i>';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon text-xl text-white"></i>';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Animation on scroll
+        const animateOnScroll = document.querySelectorAll('.animate-on-scroll');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        animateOnScroll.forEach(element => {
+            observer.observe(element);
+        });
+
+        // Show project details modal
+        function showProjectDetail(projectId) {
+            const modal = document.getElementById('projectModal');
+            const content = document.getElementById('projectDetailContent');
+            
+            let projectData = {};
+            switch(projectId) {
+                case 'project1':
+                    projectData = {
+                        title: 'Campus Network System Development',
+                        description: 'Designed a campus-scale computer network architecture featuring inter-building integration using Cisco Packet Tracer.',
+                        technologies: ['Networking', 'Cisco', 'Simulation'],
+                        details: [
+                            'Designed a campus-scale computer network architecture featuring inter-building integration using Cisco Packet Tracer',
+                            'Configured DHCP Servers and VLANs for efficient traffic management and automated IP Address distribution',
+                            'Optimized network performance through precise subnetting calculations (NA, BA, HA, SM) to ensure infrastructure scalability'
+                        ]
+                    };
+                    break;
+                case 'project2':
+                    projectData = {
+                        title: 'Blackjack Game Development',
+                        description: 'Developed a console-based Blackjack card game application using C++. Implemented complex algorithmic logic for random card shuffling, hand value calculation, and a basic AI for the dealer.',
+                        technologies: ['Programming', 'C++', 'Game Logic'],
+                        details: [
+                            'Developed a console-based Blackjack card game application using C++',
+                            'Implemented complex algorithmic logic for random card shuffling, hand value calculation, and a basic AI for the dealer',
+                            'Applied advanced data structures and control flows to ensure game rule validity and a responsive user experience'
+                        ]
+                    };
+                    break;
+                case 'project3':
+                    projectData = {
+                        title: 'IoT Smart Lamp Project',
+                        description: 'Temperature-sensing smart lamp for community health monitoring. The project combines hardware engineering with IoT technology to provide real-time environmental data.',
+                        technologies: ['IoT', 'Python', 'Hardware'],
+                        details: [
+                            'Designed and developed a smart lamp system with temperature sensors',
+                            'Integrated with a local IoT network for data collection',
+                            'Implemented mobile application for data visualization',
+                            'Deployed in community centers for health monitoring purposes'
+                        ]
+                    };
+                    break;
+            }
+            
+            content.innerHTML = `
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">${projectData.title}</h2>
+                <p class="text-slate-600 dark:text-slate-300 mb-6">${projectData.description}</p>
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">Technologies Used:</h3>
+                    <div class="flex flex-wrap gap-2">
+                        ${projectData.technologies.map(tech => `<span class="bg-primary text-white text-xs font-medium px-2.5 py-0.5 rounded">${tech}</span>`).join('')}
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">Key Achievements:</h3>
+                <ul class="space-y-2 text-slate-600 dark:text-slate-300">
+                    ${projectData.details.map(detail => `<li class="flex items-start"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i><span>${detail}</span></li>`).join('')}
+                </ul>
+            `;
+            
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.querySelector('.modal-content').classList.add('show');
+            }, 10);
+        }
+
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('projectModal');
+            modal.querySelector('.modal-content').classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        // Close modal when clicking outside content
+        window.onclick = function(event) {
+            const modal = document.getElementById('projectModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! I will get back to you soon.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
